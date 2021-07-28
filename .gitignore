@@ -1,4 +1,6 @@
 *.dat
+dev_config.py
+__pycache__/
 /TODO
 sources/
 *~
