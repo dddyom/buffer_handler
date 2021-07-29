@@ -17,29 +17,53 @@ def get_split_matrix(buffer_matrix, type_of_split='fst'):
     return result_split_matrix
 
 
-def get_null_coords_by_num(number=3, type_of_chunks='fst'):
+def get_null_coords_by_num(number, type_of_chunks='fst'):
     
     if type_of_chunks == 'fst':
         width_indent, length_indent = 240, 256
         count_in_row = 5
+        max_index = 39
     elif type_of_chunks == 'snd':
         width_indent, length_indent = 30, 128
         count_in_row = 8
+        max_index = 15
+    else:
+        raise TypeError("Unexpected type of chunk")
     
-    width_axis = 0    
-    for i in range(0, number, count_in_row):
-        width_axis += width_indent
+    if number >= (max_index + 1) or number <= -1:
+        raise IndexError("Unexpected index of chunk")
     
-    length_axis = length_indent * (number % count_in_row)
-    return (width_axis, length_axis)
+    width_coordinate = width_indent * (number % count_in_row)
+    
+    length_coordinate = length_indent *(number // count_in_row)    
+    
+    #length_coordinate = 0    
+    #for i in range(-1, number, count_in_row):
+        #if i == -1:
+            #continue
+        #length_coordinate += length_indent
+        #print(i)
+        
+    return (width_coordinate, length_coordinate)
+
+def get_center_by_null_coords(width_null_coord, length_null_coord):
+    width_indent = 30
+    length_indent = 128
+    
+    width_center_coord = width_null_coord + width_indent // 2
+    length_center_coord = length_null_coord + length_indent // 2
+    
+    return (width_center_coord, length_center_coord)
+    
 
 def main():
     test = np.load(npy_path)
-    print(test.shape, '\n')
+    #print(test.shape, '\n')
     split_matrix = get_split_matrix(test)
-    print(split_matrix.shape, '\n')
-    print(split_matrix[0])
-    print(get_null_coords_by_num(number=39))
+    #print(split_matrix.shape, '\n')
+    #print(split_matrix[0])
+    width_null, length_null = get_null_coords_by_num(number=39)
+    #print(get_center_by_null_coords(width_null, length_null))
 
 
 if __name__ == "__main__":
