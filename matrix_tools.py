@@ -17,25 +17,67 @@ def get_split_matrix(buffer_matrix, type_of_split='fst'):
     return result_split_matrix
 
 
-def get_null_coords_by_num(number, type_of_chunks='fst'):
+#def get_null_coords_by_num(number, type_of_chunks='fst'):
+    #
+    #if type_of_chunks == 'fst':
+        #distance_indent, azimuth_indent = 240, 256
+        #count_in_row = 5
+        #max_index = 39
+    #elif type_of_chunks == 'snd':
+        #distance_indent, azimuth_indent = 30, 128
+        #count_in_row = 8
+        #max_index = 15
+    #else:
+        #raise TypeError("Unexpected type of chunk")
+    #
+    #if number >= (max_index + 1) or number <= -1:
+        #raise IndexError("Unexpected index of chunk")
+    #
+    #distance_coordinate = distance_indent * (number % count_in_row)
+    #
+    #azimuth_coordinate = azimuth_indent *(number // count_in_row)    
+    #
+    #azimuth_coordinate = 0    
+    #for i in range(-1, number, count_in_row):
+        #if i == -1:
+            #continue
+        #azimuth_coordinate += azimuth_indent
+        #print(i)
+        #
+    #return (distance_coordinate, azimuth_coordinate)
+
+
+def get_null_coords_by_num(number_fst, number_snd=None):
     
-    if type_of_chunks == 'fst':
-        distance_indent, azimuth_indent = 240, 256
-        count_in_row = 5
-        max_index = 39
-    elif type_of_chunks == 'snd':
-        distance_indent, azimuth_indent = 30, 128
-        count_in_row = 8
-        max_index = 15
-    else:
-        raise TypeError("Unexpected type of chunk")
-    
-    if number >= (max_index + 1) or number <= -1:
+    distance_indent_fst, azimuth_indent_fst = 240, 256
+    count_in_row_fst = 5
+    max_index_fst = 39
+        
+    if number_fst >= (max_index_fst + 1) or number_fst <= -1:
         raise IndexError("Unexpected index of chunk")
+        
+    distance_coordinate_fst = distance_indent_fst * (number_fst % count_in_row_fst)
     
-    distance_coordinate = distance_indent * (number % count_in_row)
+    azimuth_coordinate_fst = azimuth_indent_fst *(number_fst // count_in_row_fst) 
     
-    azimuth_coordinate = azimuth_indent *(number // count_in_row)    
+    if number_snd:  
+        
+        distance_indent_snd, azimuth_indent_snd = 30, 128
+        count_in_row_snd = 8
+        max_index_snd = 15
+        
+        if number_snd >= (max_index_snd + 1) or number_snd <= -1:
+            raise IndexError("Unexpected index of chunk")
+        
+        distance_coordinate_snd = distance_indent_snd * (number_snd % count_in_row_snd)
+    
+        azimuth_coordinate_snd = azimuth_indent_snd *(number_snd // count_in_row_snd)   
+        
+        return (distance_coordinate_snd, azimuth_coordinate_snd)
+    
+    return (distance_coordinate_fst, azimuth_coordinate_fst)
+
+    
     
     #azimuth_coordinate = 0    
     #for i in range(-1, number, count_in_row):
@@ -44,7 +86,7 @@ def get_null_coords_by_num(number, type_of_chunks='fst'):
         #azimuth_coordinate += azimuth_indent
         #print(i)
         
-    return (distance_coordinate, azimuth_coordinate)
+    
 
 def get_center_by_null_coords(distance_null_coord, azimuth_null_coord):
     distance_indent = 30
@@ -75,7 +117,7 @@ def main():
     split_matrix = get_split_matrix(test)
     #print(split_matrix.shape, '\n')
     #print(split_matrix[0])
-    distance_null, azimuth_null = get_null_coords_by_num(number=39)
+    distance_null, azimuth_null = get_null_coords_by_num(number_fst=39)
     print(get_grades_and_kilometers_by_coords(distance_null, azimuth_null))
     print(get_center_by_null_coords(distance_null, azimuth_null))
 
