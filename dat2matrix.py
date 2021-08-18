@@ -1,15 +1,24 @@
 import numpy as np
-import struct
 
+
+f = open("sources/SO_201207_153155.dat", "rb")
+buffer = f.read()
+
+temp = []
+
+for i in range(len(buffer)):
+    temp.append(buffer[i])
 
 matrix = []
-with open("sources/SO_201127_151029.dat", "rb") as f:
-    for i in f:
-        print(struct.unpack('f', i))
-        #matrix.append(np.array(list(i)))
-        #print(np.array(list(i)).shape)
 
-#matrix = np.array(matrix)
-#print(matrix)
-#print(matrix.shape)
-#np.save(matrix, '1.npy')
+for i in range(0, len(buffer)-1, 2):
+    matrix.append(int(str(buffer[i + 1]) + str(buffer[i])))
+    #matrix.append(int(str(buffer[i]) + str(buffer[i + 1])))
+
+matrix = np.array(matrix)
+print(matrix.shape)
+
+matrix = np.reshape(matrix, (2048, 1200))
+print(matrix.shape)
+print(matrix[0][5:10])
+
