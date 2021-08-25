@@ -1,19 +1,25 @@
 import numpy as np
+import struct
 
 
-f = open("sources/SO_201207_153155.dat", "rb")
-buffer = f.read()
+def dat2nparr(dat_file_dir):
+    buffer = []
+    dat_file = open(dat_file_dir, "rb").read()
 
-matrix = []
+    for i in range(0, len(dat_file), 2):
+        buffer.append(struct.unpack("<H", dat_file[i: i + 2]))
 
-for i in range(0, len(buffer)-1, 2):
-    matrix.append(int(str(buffer[i + 1]) + str(buffer[i])))
+    matrix = np.reshape(np.array(buffer), (2048, 1200))
+
+    return matrix
 
 
-matrix = np.array(matrix)
-print(matrix.shape)
-
-matrix = np.reshape(matrix, (2048, 1200))
-print(matrix.shape)
-print(matrix[0][5:10])
-
+if __name__ == "__main__":
+    pass
+    # import time
+    # start_load_matrix = time.perf_counter()
+    # matrix = dat2nparr("sources/SO_201207_153155.dat")
+    # finish_load_matrix = time.perf_counter()
+    # print(matrix.shape)
+    # print(matrix[0][5:10])
+    # print(finish_load_matrix - start_load_matrix)
